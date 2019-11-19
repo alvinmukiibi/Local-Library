@@ -1,0 +1,15 @@
+extend layout
+
+block content
+
+  h1 Author: #{title}
+  p #{author.dob} to #{author.dod}
+
+  h3 Books
+
+    each book in books
+
+      a(href=book.url) #{book.title}
+      p= book.summary
+    else
+      Author has no books yet
