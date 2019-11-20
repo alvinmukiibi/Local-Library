@@ -5,11 +5,13 @@ block content
   h1 Author: #{title}
   p #{author.dob} to #{author.dod}
 
-  h3 Books
+  div(style='margin-left:20px;margin-top:20px')
+    h3 Books
 
-    each book in books
-
-      a(href=book.url) #{book.title}
-      p= book.summary
-    else
-      Author has no books yet
+    dl
+      each book in books
+        dt
+          a(href=book.url) #{book.title}
+        dd= book.summary
+      else
+        p This author has no books yet

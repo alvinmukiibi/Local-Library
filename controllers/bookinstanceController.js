@@ -1,5 +1,5 @@
 let BookInstance = require('../models/bookinstance');
-
+let async = require('async');
 // Display list of all BookInstances.
 exports.bookinstance_list = (req, res) => {
     BookInstance.find()
@@ -13,8 +13,22 @@ exports.bookinstance_list = (req, res) => {
 };
 
 // Display detail page for a specific BookInstance.
-exports.bookinstance_detail = (req, res) => {
-    res.send('NOT IMPLEMENTED: BookInstance detail: ' + req.params.id);
+exports.bookinstance_detail = (req, res, next) => {
+    async.parallel({
+        bookinstance: (callback) => {
+            BookInstance.findById(req.params.id)
+                .populate('book')
+                .exec(callback)
+        }
+    },
+        (err, results) => {
+            if(err){
+                return next(err)
+            }
+
+            res.render('bookinstance_detail', {title: results.bookinstance.book.title, bookinstance: results.bookinstance})
+        }
+    )
 };
 
 // Display BookInstance create form on GET.
